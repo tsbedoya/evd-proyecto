@@ -30,7 +30,7 @@ export default function Navbar() {
             </a>
           </li>
           <li>
-            <a href="/" onClick={handleMenuToggle}>
+            <a href="Mapa" onClick={handleMenuToggle}>
               Mapa
             </a>
           </li>
