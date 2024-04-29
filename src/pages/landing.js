@@ -1,16 +1,12 @@
 import React from "react";
-import "../App.css";
-import "../globals.css";
-import Navbar from "../components/navbar";
 
 export default function Landing() {
   return (
-    <main className="main">
-      <Navbar />
-      <section className="contenedor">
-        <div className="presentacion">
+    <div className="container">
+      <div className="row">
+        <div className="col">
           <h2>Contexto</h2>
-          <div className="columna">
+          <div>
             <p>
               Lorem Ipsum es simplemente el texto de relleno de las imprentas y
               archivos de texto. Lorem Ipsum ha sido el texto de relleno
@@ -41,7 +37,7 @@ export default function Landing() {
             </p>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }

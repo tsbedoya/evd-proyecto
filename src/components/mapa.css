@@ -1,0 +1,11 @@
+.wrap-map {
+  position: relative;
+  min-height: 100vh;
+}
+
+.leaflet-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}

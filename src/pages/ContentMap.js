@@ -1,9 +1,15 @@
-import React from 'react'
-import Map from '../components/map'
+import React from "react";
+import Map from "../components/map";
+
 export default function ContentMap() {
   return (
-    
-      <Map />
-    
-  )
+    <div className="row">
+      <div className="col">
+        <h2>GRAFICAS....</h2>
+      </div>
+      <div className="col" style={{ paddingRight: 0 }}>
+        <Map />
+      </div>
+    </div>
+  );
 }

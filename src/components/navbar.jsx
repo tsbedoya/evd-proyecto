@@ -1,40 +1,43 @@
 "use client";
-import  "../App.css";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const handleMenuToggle = () => {
-    setMenuOpen(!menuOpen);
-  };
-
   return (
-    <header className={`navbar ${menuOpen ? "navbarOpen" : ""}`}>
-      <a href="/">
-        <h2 className="logo">
-          Geo<span className="color">Airbnb</span>
-        </h2>
-      </a>
-      <nav className={menuOpen ? menuOpen : ""}>
-        <div className="menuIcon" onClick={handleMenuToggle}>
-          {/* Icono de hamburguesa */}
-          <div className="iconLine"></div>
-          <div className="iconLine"></div>
-          <div className="iconLine"></div>
+    <header>
+      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <div className="container">
+          <Link className="navbar-brand" to="/">
+            <h2 className="logo">
+              Geo<span className="color">Airbnb</span>
+            </h2>
+          </Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <Link className="nav-link active" aria-current="page" to="/">
+                  Inicio
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/mapa">
+                  Mapa
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
-        <ul className={`options_menu ${menuOpen ? "showMenu" : ""}`}>
-          <li>
-            <a href="/" onClick={handleMenuToggle}>
-              Inicio
-            </a>
-          </li>
-          <li>
-            <a href="Mapa" onClick={handleMenuToggle}>
-              Mapa
-            </a>
-          </li>
-        </ul>
       </nav>
     </header>
   );
