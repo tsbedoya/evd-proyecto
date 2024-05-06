@@ -13,3 +13,29 @@
 .photos-airbnb {
   width: 400px;
 }
+
+.leaflet-container .leaflet-popup-content {
+  margin: 0;
+}
+
+.leaflet-container .photos-airbnb img {
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+}
+
+.leaflet-container .leaflet-popup .slick-dots {
+  bottom: 0;
+}
+
+.leaflet-container .modal-info {
+  padding: 12px;
+}
+
+.leaflet-container .slick-dots li button:before {
+  opacity: .8;
+  color: #fff;
+}
+
+.leaflet-container .slick-dots li.slick-active button:before {
+  color: #000;
+}
