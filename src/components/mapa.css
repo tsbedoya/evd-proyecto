@@ -39,3 +39,28 @@
 .leaflet-container .slick-dots li.slick-active button:before {
   color: #000;
 }
+
+.leaflet-container .slick-prev {
+  left: 4px;
+  z-index: 9;
+}
+
+.leaflet-container .slick-next {
+  right: 4px;
+  z-index: 9;
+}
+
+.wrap-map .leaflet-container a.leaflet-popup-close-button {
+  width: 30px;
+  height: 30px;
+  font: 28px Tahoma, Verdana, sans-serif;
+  color: #fff;
+}
+
+.wrap-map .leaflet-popup-content p {
+  margin: 0;
+}
+
+p.name-airbnb {
+  font-weight: bold;
+}

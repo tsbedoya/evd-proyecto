@@ -1,5 +1,5 @@
 import React from "react";
-import { Marker, Popup } from "react-leaflet";
+import { Popup, GeoJSON } from "react-leaflet";
 import Slider from "react-slick";
 
 const sliderSettings = {
@@ -8,9 +8,9 @@ const sliderSettings = {
     slidesToScroll: 1,
 };
 
-export default function AirbnbModal({ item }) {
+export default function LayerAirbnb({ item }) {
   return (
-    <Marker position={[item.location_x, item.location_y]}>
+    <GeoJSON data={item.geometry}>
       <Popup maxWidth="400">
         <Slider className="photos-airbnb" {...sliderSettings}>
           {item.photos.map((photo, i) => (
@@ -18,9 +18,12 @@ export default function AirbnbModal({ item }) {
           ))}
         </Slider>
         <div className="modal-info">
-            Airbnb: {item.name}
+          <p className="name-airbnb">{item.name}</p>
+          <p>Puntaje: {item.stars}</p>
+          <p>Número de invitados: {item.numberOfGuests}</p>
+          <p>Tipo habitación: {item.roomType}</p>
         </div>
       </Popup>
-    </Marker>
+    </GeoJSON>
   );
 }

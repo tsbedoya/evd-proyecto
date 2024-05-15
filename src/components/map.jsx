@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import L from "leaflet";
-import { MapContainer, TileLayer } from "react-leaflet";
-import AirbnbModal from "./airbn-modal";
+import {
+  MapContainer,
+  TileLayer,
+  LayersControl,
+  LayerGroup,
+} from "react-leaflet";
+import LayerAirbnb from "./layer-airbnb";
+import LayerPoligonos from "./layer-poligonos";
 
 import "./mapa.css";
 import "leaflet/dist/leaflet.css";
@@ -17,31 +23,55 @@ L.Marker.prototype.options.icon = L.icon({
 // medellin
 const defaultLocation = [6.2442872, -75.6224112];
 export default function Map() {
-  const [data, setData] = useState([]);
+  const mapRef = useRef();
+  const [dataAirbnb, setDataAirbnb] = useState([]);
+  const [dataPoligonos, setDataPoligonos] = useState([]);
+
+  const fetchDataAirbnb = async () => {
+    const response = await fetch("http://localhost:3001/layer-airbnb");
+    const airbnb = await response.json();
+    setDataAirbnb(airbnb);
+  };
+
+  const fetchDataPoligonos = async () => {
+    const response = await fetch("http://localhost:3001/layer-poligonos");
+    const poligonos = await response.json();
+    setDataPoligonos(poligonos);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("http://localhost:3001");
-      const airbnb = await response.json();
-      setData(airbnb);
-    };
-
-    fetchData();
+    Promise.all([fetchDataAirbnb(), fetchDataPoligonos()])
   }, []);
 
   return (
     <div className="wrap-map">
-      {data.length ? (
-        <MapContainer
-          center={defaultLocation}
-          zoom={13}
-        >
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          {data.map((item) => (
-            <AirbnbModal key={item.id} item={item}/>
-          ))}
-        </MapContainer>
-      ) : null}
+      <MapContainer center={defaultLocation} zoom={13} ref={mapRef}>
+        <LayersControl position="topright">
+          <LayersControl.BaseLayer checked name="Mapa openstreetmap">
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          </LayersControl.BaseLayer>
+
+          <LayersControl.BaseLayer name="Mapa ArcGIS">
+            <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
+          </LayersControl.BaseLayer>
+
+          <LayersControl.Overlay checked name="Airbnb ubicaciones">
+            <LayerGroup>
+              {dataAirbnb.map((item) => (
+                <LayerAirbnb key={item.id} item={item} />
+              ))}
+            </LayerGroup>
+          </LayersControl.Overlay>
+
+          <LayersControl.Overlay name="Poligonos barrios">
+            <LayerGroup>
+              {dataPoligonos.map((item) => (
+                <LayerPoligonos key={item.id} item={item} />
+              ))}
+            </LayerGroup>
+          </LayersControl.Overlay>
+        </LayersControl>
+      </MapContainer>
     </div>
   );
 }

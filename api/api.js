@@ -33,10 +33,10 @@ app.use(
   })
 );
 
-app.get("/", async function (req, res) {
+app.get("/layer-airbnb", async function (req, res) {
   try {
     const results = await client.query(`
-      select ndlt.id, ndlt."name", ndlt.stars, ndlt."numberOfGuests", ndlt.location_x, ndlt.location_y, ndlt.geom,
+      select ndlt.id, ndlt."name", ndlt.stars, ndlt."numberOfGuests", ndlt."roomType", ST_AsGeoJSON(ndlt.geom)::json AS geometry,
         ${nestQuery(`
           SELECT p.url, p.caption
           FROM photos p
@@ -44,6 +44,18 @@ app.get("/", async function (req, res) {
         `)} AS photos
       FROM nombre_de_la_tabla ndlt
       limit 20`,
+    );
+
+    res.send(results.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/layer-poligonos", async function (req, res) {
+  try {
+    const results = await client.query(`select id, comuna, nombre_com, barrio, nombre_bar, ST_AsGeoJSON(geom)::json AS geometry
+      from "barrio-vereda" limit 20`,
     );
 
     res.send(results.rows);
