@@ -6,8 +6,8 @@ import {
   LayersControl,
   LayerGroup,
 } from "react-leaflet";
-import LayerAirbnb from "./layer-airbnb";
-import LayerPoligonos from "./layer-poligonos";
+import LayerAirbnb from "./layers/layer-airbnb";
+import LayerPoligonos from "./layers/layer-poligonos";
 
 import "./mapa.css";
 import "leaflet/dist/leaflet.css";
@@ -53,6 +53,10 @@ export default function Map() {
 
           <LayersControl.BaseLayer name="Mapa ArcGIS">
             <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
+          </LayersControl.BaseLayer>
+
+          <LayersControl.BaseLayer name="Mapa Alidade Smooth">
+            <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
           </LayersControl.BaseLayer>
 
           <LayersControl.Overlay checked name="Airbnb ubicaciones">

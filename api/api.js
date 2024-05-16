@@ -36,14 +36,15 @@ app.use(
 app.get("/layer-airbnb", async function (req, res) {
   try {
     const results = await client.query(`
-      select ndlt.id, ndlt."name", ndlt.stars, ndlt."numberOfGuests", ndlt."roomType", ST_AsGeoJSON(ndlt.geom)::json AS geometry,
+      SELECT a.id, a."name", a.stars, a."numberOfGuests", a."roomType", ST_AsGeoJSON(a.geom)::json AS geometry,
         ${nestQuery(`
           SELECT p.url, p.caption
           FROM photos p
-          WHERE p.id_airbnb = ndlt.id
+          WHERE p.id_airbnb = a.id
         `)} AS photos
-      FROM nombre_de_la_tabla ndlt
-      limit 20`,
+      FROM airbnb a
+      WHERE a.address = 'Medellín, Antioquia, Colombia'
+      limit 30`,
     );
 
     res.send(results.rows);
