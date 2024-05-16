@@ -8,6 +8,7 @@ import {
 } from "react-leaflet";
 import LayerAirbnb from "./layers/layer-airbnb";
 import LayerPoligonos from "./layers/layer-poligonos";
+import LayerPoligonosAirbnb from "./layers/layer-poligonos-airbnb";
 
 import "./mapa.css";
 import "leaflet/dist/leaflet.css";
@@ -40,7 +41,7 @@ export default function Map() {
   };
 
   useEffect(() => {
-    Promise.all([fetchDataAirbnb(), fetchDataPoligonos()])
+    Promise.all([fetchDataAirbnb(), fetchDataPoligonos()]);
   }, []);
 
   return (
@@ -72,6 +73,12 @@ export default function Map() {
               {dataPoligonos.map((item) => (
                 <LayerPoligonos key={item.id} item={item} />
               ))}
+            </LayerGroup>
+          </LayersControl.Overlay>
+
+          <LayersControl.Overlay name="Poligonos con más Airbnb">
+            <LayerGroup>
+              <LayerPoligonosAirbnb />
             </LayerGroup>
           </LayersControl.Overlay>
         </LayersControl>

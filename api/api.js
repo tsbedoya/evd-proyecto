@@ -56,7 +56,25 @@ app.get("/layer-airbnb", async function (req, res) {
 app.get("/layer-poligonos", async function (req, res) {
   try {
     const results = await client.query(`select id, comuna, nombre_com, barrio, nombre_bar, ST_AsGeoJSON(geom)::json AS geometry
-      from "barrio-vereda" limit 20`,
+      from "barrio-vereda" limit 40`,
+    );
+
+    res.send(results.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/layer-poligonos-airbnb", async function (req, res) {
+  try {
+    const results = await client.query(`
+      SELECT bv.id, bv.nombre_bar, bv.nombre_com, ST_AsGeoJSON(bv.geom)::json AS geometry,
+        json_agg(json_build_object('point_geom', a.geom)) AS airbnbs
+      FROM "barrio-vereda" bv
+      JOIN airbnb a ON ST_Contains(bv.geom, a.geom)
+      GROUP BY bv.id
+      ORDER BY COUNT(*) DESC
+      LIMIT 5;`,
     );
 
     res.send(results.rows);
