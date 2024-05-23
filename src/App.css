@@ -34,4 +34,11 @@ span.color1 {
   overflow-y: scroll;
   max-height: 100vh;
   margin-bottom: 1rem;
+  text-align: center;
+}
+
+.pie-hart, .bar-hart {
+  width: 560px;
+  height: 560px;
+  margin: auto;
 }
