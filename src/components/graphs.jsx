@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -27,27 +27,35 @@ export const options = {
     },
     title: {
       display: true,
-      text: "Chart.js Bar Chart",
+      text: "Top 5 cantidad Airbnb por barrio",
     },
   },
 };
 
-export const data = {
-  labels: ["January", "February", "March", "April", "May", "June", "July"],
-  datasets: [
-    {
-      label: "Dataset 1",
-      data: [155, 268, 81, 165, 306, 378, 243],
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Dataset 2",
-      data: [384, 861, 924, 604, 846, 411, 428],
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-  ],
-};
-
 export default function Graphs() {
-  return <Bar options={options} data={data} />;
+  const [dataReporte1, setDataReporte1] = useState({});
+
+  const fetchDataReporteAirbnb = async () => {
+    const response = await fetch(
+      "http://localhost:3001/reporte-cantidad-airbnb"
+    );
+    const reporteAirbnb = await response.json();
+    const mappedReporteAirbnb = {
+      labels: reporteAirbnb.map((item) => item.nombre_bar),
+      datasets: [
+        {
+          label: "Cantidad Airbnb",
+          data: reporteAirbnb.map((item) => parseInt(item.cantidad)),
+          backgroundColor: "rgba(255, 99, 132, 0.5)",
+        }
+      ],
+    };
+    setDataReporte1(mappedReporteAirbnb);
+  };
+
+  useEffect(() => {
+    fetchDataReporteAirbnb();
+  }, []);
+
+  return Object.keys(dataReporte1).length ? (<Bar options={options} data={dataReporte1} />) : null;
 }

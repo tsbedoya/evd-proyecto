@@ -9,6 +9,7 @@ import {
 import LayerAirbnb from "./layers/layer-airbnb";
 import LayerPoligonos from "./layers/layer-poligonos";
 import LayerPoligonosAirbnb from "./layers/layer-poligonos-airbnb";
+import LayerEstacionesMetro from "./layers/layer-estaciones-metro";
 
 import "./mapa.css";
 import "leaflet/dist/leaflet.css";
@@ -27,6 +28,7 @@ export default function Map() {
   const mapRef = useRef();
   const [dataAirbnb, setDataAirbnb] = useState([]);
   const [dataPoligonos, setDataPoligonos] = useState([]);
+  const [dataEstacionesMetro, setEstacionesMetro] = useState([]);
 
   const fetchDataAirbnb = async () => {
     const response = await fetch("http://localhost:3001/layer-airbnb");
@@ -40,8 +42,15 @@ export default function Map() {
     setDataPoligonos(poligonos);
   };
 
+  const fetchDataMetro = async () => {
+    const response = await fetch("http://localhost:3001/layer-metro");
+    const estacionesMetro = await response.json();
+    setEstacionesMetro(estacionesMetro);
+  };
+
+
   useEffect(() => {
-    Promise.all([fetchDataAirbnb(), fetchDataPoligonos()]);
+    Promise.all([fetchDataAirbnb(), fetchDataPoligonos(), fetchDataMetro()]);
   }, []);
 
   return (
@@ -76,11 +85,19 @@ export default function Map() {
             </LayerGroup>
           </LayersControl.Overlay>
 
-          <LayersControl.Overlay name="Poligonos con más Airbnb">
+          <LayersControl.Overlay name="Estaciones metro">
+            <LayerGroup>
+              {dataEstacionesMetro.map((item) => (
+                <LayerEstacionesMetro key={item.id} item={item} />
+              ))}
+            </LayerGroup>
+          </LayersControl.Overlay>
+
+          {/*<LayersControl.Overlay name="Poligonos con más Airbnb">
             <LayerGroup>
               <LayerPoligonosAirbnb />
             </LayerGroup>
-          </LayersControl.Overlay>
+          </LayersControl.Overlay>*/}
         </LayersControl>
       </MapContainer>
     </div>

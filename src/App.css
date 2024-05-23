@@ -14,3 +14,7 @@ span.color1 {
 #navbarNav {
   justify-content: end;
 }
+
+.icono-metro {
+  border-radius: 12px;
+}
