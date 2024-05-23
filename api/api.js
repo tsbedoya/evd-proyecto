@@ -103,6 +103,25 @@ app.get("/reporte-cantidad-airbnb", async function (req, res) {
       JOIN airbnb a ON ST_Contains(bv.geom, a.geom)
       GROUP BY bv.id
       ORDER BY COUNT(*) DESC
+      LIMIT 10;`,
+    );
+
+    res.send(results.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/estaciones-mas-cercana", async function (req, res) {
+  try {
+    const { lat, long } = req.query;
+    const results = await client.query(`
+      SELECT id, nombre, ST_Distance(
+        ST_Transform(geom, 3857),
+        ST_Transform(ST_SetSRID(ST_MakePoint(${lat}, ${long}), 4326), 3857)
+      ) / 1000 AS distance_kilometers
+      FROM estaciones_metro em 
+      ORDER BY geom <-> ST_SetSRID(ST_MakePoint(${lat}, ${long}), 4326)
       LIMIT 5;`,
     );
 
