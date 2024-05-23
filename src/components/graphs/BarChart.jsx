@@ -14,6 +14,9 @@ const options = {
         text: "Top 10 promedio Airbnb por barrio",
       },
     },
+    animation: {
+        y: {from: 500}
+    },
 };
 
 export const GraphBarChart = () => {

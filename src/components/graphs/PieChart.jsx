@@ -33,7 +33,6 @@ const options = {
           top: 80,
           bottom: 80,
         },
-  
       },
     },
   };
@@ -75,6 +74,6 @@ export const GraphPieChart = () => {
     }, []);
   
     return Object.keys(dataReporte).length ? (
-      <Pie options={options} data={dataReporte} className="pie-hart"/>
+      <Pie options={options} data={dataReporte} className="pie-hart" />
     ) : <img src={Loading} alt="loading..." width="80px" />;
 };
