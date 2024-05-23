@@ -96,6 +96,7 @@ app.get("/layer-poligonos-airbnb", async function (req, res) {
 app.get("/reporte-cantidad-airbnb", async function (req, res) {
   try {
     const results = await client.query(`
+<<<<<<< HEAD
       WITH top10 AS (
     SELECT 
         bv.id, 
@@ -133,6 +134,34 @@ remaining AS (
 SELECT * FROM top10
 UNION ALL
 SELECT * FROM remaining;`);
+=======
+      SELECT bv.id, bv.nombre_bar, COUNT(a.id) as cantidad
+      FROM "barrio-vereda" bv
+      JOIN airbnb a ON ST_Contains(bv.geom, a.geom)
+      GROUP BY bv.id
+      ORDER BY COUNT(*) DESC
+      LIMIT 10;`,
+    );
+
+    res.send(results.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/estaciones-mas-cercana", async function (req, res) {
+  try {
+    const { lat, long } = req.query;
+    const results = await client.query(`
+      SELECT id, nombre, ST_Distance(
+        ST_Transform(geom, 3857),
+        ST_Transform(ST_SetSRID(ST_MakePoint(${lat}, ${long}), 4326), 3857)
+      ) / 1000 AS distance_kilometers
+      FROM estaciones_metro em 
+      ORDER BY geom <-> ST_SetSRID(ST_MakePoint(${lat}, ${long}), 4326)
+      LIMIT 5;`,
+    );
+>>>>>>> 1b37f177d770bb2c5938d71f6e27740bf5067b26
 
     res.send(results.rows);
   } catch (err) {
