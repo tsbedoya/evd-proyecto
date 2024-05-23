@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Popup, GeoJSON } from "react-leaflet";
+import { GeoJSON } from "react-leaflet";
 
 export default function LayerPoligonosAirbnb({ item }) {
   const [dataPoligonosAirbnb, setDataPoligonosAirbnb] = useState([]);
@@ -17,7 +17,7 @@ export default function LayerPoligonosAirbnb({ item }) {
   }, []);
 
   const Poligonos = () => {
-    return dataPoligonosAirbnb.map((item) => (
+    return dataPoligonosAirbnb.map((item,) => (
       <GeoJSON key={item.id} data={item.geometry} />
     ));
   }
@@ -25,8 +25,8 @@ export default function LayerPoligonosAirbnb({ item }) {
   const Airbnbs = () => {
     let airbnbs = []
     for (const poligono of dataPoligonosAirbnb) {
-      const result = poligono.airbnbs.map((item) => (
-        <GeoJSON key={item.id} data={item.point_geom} />
+      const result = poligono.airbnbs.map((item, i) => (
+        <GeoJSON key={i} data={item.point_geom} />
       ));
       airbnbs.push([...result])
     }

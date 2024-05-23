@@ -2,7 +2,8 @@ import React from "react";
 import Map from "../components/map";
 import { Graphs, GraphsPieChart } from "../components/graphs";
 import "../App.css";
-export default function ContentMap() {
+
+export default function Dashboard() {
   return (
     <div className="row bg-body-tertiary ">
       <div className="col ">

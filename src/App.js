@@ -1,7 +1,7 @@
 import { Routes, Route, Outlet } from "react-router-dom";
 import "./App.css";
-import Landing from "./pages/landing";
-import ContentMap from "./pages/ContentMap";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/navbar";
 
 function App() {
@@ -9,8 +9,8 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Landing />} />
-          <Route path="mapa" element={<ContentMap />} />
+          <Route index element={<Home />} />
+          <Route path="mapa" element={<Dashboard />} />
         </Route>
       </Routes>
     </div>

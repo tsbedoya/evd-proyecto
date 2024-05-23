@@ -26,6 +26,7 @@ L.Marker.prototype.options.icon = L.icon({
 const defaultLocation = [6.2442872, -75.6224112];
 export default function Map() {
   const mapRef = useRef();
+  const routingControlRef = useRef(null);
   const [dataAirbnb, setDataAirbnb] = useState([]);
   const [dataPoligonos, setDataPoligonos] = useState([]);
   const [dataEstacionesMetro, setEstacionesMetro] = useState([]);
@@ -47,6 +48,10 @@ export default function Map() {
     const estacionesMetro = await response.json();
     setEstacionesMetro(estacionesMetro);
   };
+
+  const updateRouting = () => {
+
+  }
 
 
   useEffect(() => {
@@ -72,7 +77,7 @@ export default function Map() {
           <LayersControl.Overlay checked name="Airbnb ubicaciones">
             <LayerGroup>
               {dataAirbnb.map((item) => (
-                <LayerAirbnb key={item.id} item={item} />
+                <LayerAirbnb key={item.id} item={item} mapRef={mapRef} routingControlRef={routingControlRef}/>
               ))}
             </LayerGroup>
           </LayersControl.Overlay>
@@ -85,7 +90,7 @@ export default function Map() {
             </LayerGroup>
           </LayersControl.Overlay>
 
-          <LayersControl.Overlay name="Estaciones metro">
+          <LayersControl.Overlay checked name="Estaciones metro">
             <LayerGroup>
               {dataEstacionesMetro.map((item) => (
                 <LayerEstacionesMetro key={item.id} item={item} />
@@ -99,6 +104,8 @@ export default function Map() {
             </LayerGroup>
           </LayersControl.Overlay>
         </LayersControl>
+
+        {routingControlRef.current && routingControlRef.current.addTo(routingControlRef.current._map)}
       </MapContainer>
     </div>
   );
