@@ -93,11 +93,11 @@ export default function Map() {
             </LayerGroup>
           </LayersControl.Overlay>
 
-          {/*<LayersControl.Overlay name="Poligonos con más Airbnb">
+          <LayersControl.Overlay name="Poligonos con más Airbnb">
             <LayerGroup>
               <LayerPoligonosAirbnb />
             </LayerGroup>
-          </LayersControl.Overlay>*/}
+          </LayersControl.Overlay>
         </LayersControl>
       </MapContainer>
     </div>

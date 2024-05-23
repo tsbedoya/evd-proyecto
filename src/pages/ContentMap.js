@@ -1,11 +1,13 @@
 import React from "react";
 import Map from "../components/map";
-import Graphs from "../components/graphs"
-
+import { Graphs, GraphsPieChart } from "../components/graphs";
+import "../App.css";
 export default function ContentMap() {
   return (
-    <div className="row">
-      <div className="col">
+    <div className="row bg-body-tertiary ">
+      <div className="col ">
+        <GraphsPieChart />
+        <br></br>
         <Graphs />
       </div>
       <div className="col" style={{ paddingRight: 0 }}>

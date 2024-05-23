@@ -5,14 +5,14 @@ const express = require("express");
 const app = express();
 
 const client = new Pool({
-  host: 'visualizacion-datos.postgres.database.azure.com',
+  host: "visualizacion-datos.postgres.database.azure.com",
   port: 5432,
-  database: 'postgres',
-  user: 'tati',
-  password: 'triodinamico123*',
+  database: "postgres",
+  user: "tati",
+  password: "triodinamico123*",
   ssl: {
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,
+  },
 });
 
 function nestQuery(query) {
@@ -44,8 +44,7 @@ app.get("/layer-airbnb", async function (req, res) {
         `)} AS photos
       FROM airbnb a
       WHERE a.address = 'Medellín, Antioquia, Colombia'
-      limit 30`,
-    );
+      limit 30`);
 
     res.send(results.rows);
   } catch (err) {
@@ -55,9 +54,9 @@ app.get("/layer-airbnb", async function (req, res) {
 
 app.get("/layer-poligonos", async function (req, res) {
   try {
-    const results = await client.query(`select id, comuna, nombre_com, barrio, nombre_bar, ST_AsGeoJSON(geom)::json AS geometry
-      from "barrio-vereda" limit 20`,
-    );
+    const results =
+      await client.query(`select id, comuna, nombre_com, barrio, nombre_bar, ST_AsGeoJSON(geom)::json AS geometry
+      from "barrio-vereda" limit 20`);
 
     res.send(results.rows);
   } catch (err) {
@@ -67,9 +66,9 @@ app.get("/layer-poligonos", async function (req, res) {
 
 app.get("/layer-metro", async function (req, res) {
   try {
-    const results = await client.query(`select id, nombre, linea, tipo_est, ST_AsGeoJSON(geom)::json AS geometry
-      from "estaciones_metro" limit 20`,
-    );
+    const results =
+      await client.query(`select id, nombre, linea, tipo_est, ST_AsGeoJSON(geom)::json AS geometry
+      from "estaciones_metro" limit 20`);
 
     res.send(results.rows);
   } catch (err) {
@@ -86,8 +85,7 @@ app.get("/layer-poligonos-airbnb", async function (req, res) {
       JOIN airbnb a ON ST_Contains(bv.geom, a.geom)
       GROUP BY bv.id
       ORDER BY COUNT(*) DESC
-      LIMIT 5;`,
-    );
+      LIMIT 5;`);
 
     res.send(results.rows);
   } catch (err) {
@@ -98,14 +96,59 @@ app.get("/layer-poligonos-airbnb", async function (req, res) {
 app.get("/reporte-cantidad-airbnb", async function (req, res) {
   try {
     const results = await client.query(`
-      SELECT bv.id, bv.nombre_bar, COUNT(a.id) as cantidad
-      FROM "barrio-vereda" bv
-      JOIN airbnb a ON ST_Contains(bv.geom, a.geom)
-      GROUP BY bv.id
-      ORDER BY COUNT(*) DESC
-      LIMIT 5;`,
-    );
+      WITH top10 AS (
+    SELECT 
+        bv.id, 
+        bv.nombre_bar, 
+        COUNT(a.id) AS cantidad
+    FROM 
+        "barrio-vereda" bv
+    JOIN 
+        airbnb a ON ST_Contains(bv.geom, a.geom)
+    GROUP BY 
+        bv.id
+    ORDER BY 
+        COUNT(a.id) DESC
+    LIMIT 10
+),
+remaining AS (
+    SELECT 
+        CAST(NULL AS INTEGER) AS id, 
+        'Otros Barrios de Medellín' AS nombre_bar, 
+        SUM(subquery.cantidad) AS cantidad
+    FROM (
+        SELECT 
+            COUNT(a.id) AS cantidad
+        FROM 
+            "barrio-vereda" bv
+        JOIN 
+            airbnb a ON ST_Contains(bv.geom, a.geom)
+        GROUP BY 
+            bv.id
+        ORDER BY 
+            COUNT(a.id) DESC
+        OFFSET 10
+    ) AS subquery
+)
+SELECT * FROM top10
+UNION ALL
+SELECT * FROM remaining;`);
 
+    res.send(results.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/reporte-precioPromedio-airbnb", async function (req, res) {
+  try {
+    const results = await client.query(`
+    SELECT bv.id, bv.nombre_bar, MIN(a.price) as precio_promedio
+    FROM "barrio-vereda" bv
+    JOIN airbnb a ON ST_Contains(bv.geom, a.geom)
+    GROUP BY bv.id
+    ORDER BY COUNT(*) DESC
+    LIMIT 10;`);
     res.send(results.rows);
   } catch (err) {
     console.error(err);
