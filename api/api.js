@@ -68,7 +68,7 @@ app.get("/layer-metro", async function (req, res) {
   try {
     const results =
       await client.query(`select id, nombre, linea, tipo_est, ST_AsGeoJSON(geom)::json AS geometry
-      from "estaciones_metro" limit 20`);
+      from "estaciones_metro"`);
 
     res.send(results.rows);
   } catch (err) {
@@ -147,11 +147,11 @@ app.get("/estaciones-mas-cercana", async function (req, res) {
     const results = await client.query(`
       SELECT id, nombre, ST_Distance(
         ST_Transform(geom, 3857),
-        ST_Transform(ST_SetSRID(ST_MakePoint(${lat}, ${lng}), 4326), 3857)
+        ST_Transform(ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326), 3857)
       ) / 1000 AS distance_kilometers,
       ST_AsGeoJSON(geom)::json AS geometry
       FROM estaciones_metro em 
-      ORDER BY geom <-> ST_SetSRID(ST_MakePoint(${lat}, ${lng}), 4326)
+      ORDER BY geom <-> ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)
       LIMIT 5;`);
     res.send(results.rows);
   } catch (err) {

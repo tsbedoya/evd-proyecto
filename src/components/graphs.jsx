@@ -9,7 +9,7 @@ import {
   ArcElement,
   Legend,
 } from "chart.js";
-import { GraphPieChart, GraphBarChart } from "./graphs/index";
+import { GraphPieChart, GraphBarChart, BarChartMetro } from "./graphs/index";
 import ChartDataLabels from "chartjs-plugin-datalabels"; // Importar el plugin
 
 // Registrar componentes de Chart.js
@@ -28,6 +28,8 @@ export default function Graphs() {
   return (
     <div className="wrap-graph">
       <div className="inner-scroll">
+        <BarChartMetro />
+        <br></br>
         <GraphPieChart />
         <br></br>
         <GraphBarChart />

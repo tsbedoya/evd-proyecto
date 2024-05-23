@@ -5,6 +5,7 @@ import {
   TileLayer,
   LayersControl,
   LayerGroup,
+  useMap
 } from "react-leaflet";
 import LayerAirbnb from "./layers/layer-airbnb";
 import LayerPoligonos from "./layers/layer-poligonos";
@@ -13,6 +14,8 @@ import LayerEstacionesMetro from "./layers/layer-estaciones-metro";
 
 import "./mapa.css";
 import "leaflet/dist/leaflet.css";
+import 'leaflet-routing-machine';
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
@@ -104,8 +107,6 @@ export default function Map() {
             </LayerGroup>
           </LayersControl.Overlay>
         </LayersControl>
-
-        {routingControlRef.current && routingControlRef.current.addTo(routingControlRef.current._map)}
       </MapContainer>
     </div>
   );

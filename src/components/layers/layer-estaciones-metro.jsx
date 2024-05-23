@@ -20,8 +20,7 @@ export default function LayerEstacionesMetro({ item }) {
       <Popup maxWidth="400">
         <div className="modal-info">
           <p className="name-airbnb">{item.nombre_bar}</p>
-          <p>Linea: {item.linea}</p>
-          <p>Nombre estación: {item.nombre}</p>
+          <p>{item.linea} - {item.nombre}</p>
           <p>Tipo estación: {item.tipo_est}</p>
         </div>
       </Popup>
