@@ -56,7 +56,7 @@ app.get("/layer-poligonos", async function (req, res) {
   try {
     const results =
       await client.query(`select id, comuna, nombre_com, barrio, nombre_bar, ST_AsGeoJSON(geom)::json AS geometry
-      from "barrio-vereda" limit 20`);
+      from "barrio-vereda" limit 100`);
 
     res.send(results.rows);
   } catch (err) {
