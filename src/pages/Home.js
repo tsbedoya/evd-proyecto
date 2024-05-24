@@ -34,14 +34,16 @@ export default function Home() {
                     Presentamos una serie de gráficas que proporcionan
                     información valiosa sobre el mercado de Airbnb en Medellín.
                     Estas gráficas incluyen:
-                  </li>
-                </ul>
-
-                <ul>
-                  <li itemType="circle">Precios promedio por barrio.</li>
-                  <li itemType="circle">Cantidad de airbnb por barrio.</li>
-                  <li itemType="circle">
-                    Estacion de metro más cercana y ruta.
+                    <ul>
+                      <li itemType="circle">Precios promedio por barrio.</li>
+                      <li itemType="circle">Cantidad de airbnb por barrio.</li>
+                      <li itemType="circle">
+                        Estacion de metro más cercana y ruta.
+                      </li>
+                      <li>
+                        Promedio de precio barrio VS Precio del alojamiento.
+                      </li>
+                    </ul>
                   </li>
                 </ul>
               </p>
