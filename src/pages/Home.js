@@ -2,8 +2,8 @@ import React from "react";
 
 export default function Home() {
   return (
-    <div className="container">
-      <div className="row" style={{ marginTop: "20px" }}>
+    <div className="container ">
+      <div className="row " style={{ marginTop: "20px" }}>
         <div className="col">
           <h2>Descubre los Airbnb en Medellín</h2>
           <hr></hr>

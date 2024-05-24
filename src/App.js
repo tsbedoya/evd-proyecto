@@ -9,7 +9,7 @@ export const AppContext = createContext("");
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-body-tertiary ">
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
