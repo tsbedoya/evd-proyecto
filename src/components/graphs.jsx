@@ -36,7 +36,7 @@ export default function Graphs() {
   return (
     <div className="wrap-graph">
       <div className="inner-scroll">
-        {hideMainGrpah && (
+        {hideMainGrpah && promedioPrecioBarrio.nombreBarrio && (
           <h3>
             El Alojamiento seleccionado esta en el barrio: <br />
             <b>{promedioPrecioBarrio.nombreBarrio}</b>

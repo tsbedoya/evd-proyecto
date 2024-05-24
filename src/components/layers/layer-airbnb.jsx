@@ -26,7 +26,9 @@ export default function LayerAirbnb({ item, mapRef, routingControlRef }) {
     if (popup) {
       popup.on("remove", () => {
         setHideMainGrpah(false);
-        mapRef.current.removeControl(removeRouting.current)
+        if (removeRouting.current) {
+          mapRef.current.removeControl(removeRouting.current)
+        }
       });
     }
   }, []);
@@ -61,16 +63,20 @@ export default function LayerAirbnb({ item, mapRef, routingControlRef }) {
       const response2 = await fetch(
         `http://localhost:3001/reporte-precioPromedio-barrio?lat=${lat}&lng=${lng}`
       );
-      const { promedio_precio_barrio, nombre_bar } = (await response2.json())[0];
-      setPromedioPrecioBarrio({
-        promedioPrecioBarrio: parseFloat(promedio_precio_barrio).toFixed(2),
-        precioAirbnb: item.price,
-        nombreBarrio: nombre_bar
-      });
-      setHideMainGrpah(true);
-
-      const [endLng, endLat] = estacionesMetro[0].geometry.coordinates;
-      setEndPoint([endLat, endLng]);
+      const result = await response2.json();
+      
+      if (result.length) {
+        const { promedio_precio_barrio, nombre_bar } = result[0]
+        setPromedioPrecioBarrio({
+          promedioPrecioBarrio: parseFloat(promedio_precio_barrio).toFixed(2),
+          precioAirbnb: item.price,
+          nombreBarrio: nombre_bar
+        });
+        setHideMainGrpah(true);
+  
+        const [endLng, endLat] = estacionesMetro[0].geometry.coordinates;
+        setEndPoint([endLat, endLng]);
+      }
     });
   };
 
