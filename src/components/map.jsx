@@ -21,7 +21,7 @@ import icon from "../icono_airbnb.jpeg";
 
 L.Marker.prototype.options.icon = L.icon({
   iconUrl: icon,
-  iconSize: [24, 24],
+  iconSize: [18, 18],
   className: "icono-airbnb"
 });
 
@@ -93,7 +93,7 @@ export default function Map() {
             </LayerGroup>
           </LayersControl.Overlay>
 
-          <LayersControl.Overlay name="Poligonos barrios">
+          <LayersControl.Overlay checked name="Poligonos barrios">
             <LayerGroup>
               {dataPoligonos.map((item) => (
                 <LayerPoligonos key={item.id} item={item} />
