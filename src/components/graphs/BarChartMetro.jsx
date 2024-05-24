@@ -35,7 +35,7 @@ export const BarChartMetro = () => {
       datasets: [
         {
           label: "Distancia en KM",
-          data: estacionesMetroCercanas.map((item) => parseInt(item.distance_kilometers)),
+          data: estacionesMetroCercanas.map((item) => parseFloat(item.distance_kilometers)),
           backgroundColor: "rgba(255, 99, 132, 0.5)",
         },
       ],

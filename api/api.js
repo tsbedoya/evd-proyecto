@@ -148,7 +148,8 @@ app.get("/estaciones-mas-cercana", async function (req, res) {
       SELECT id, nombre, ST_Distance(
         ST_Transform(geom, 3857),
         ST_Transform(ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326), 3857)
-      ) / 1000 AS distance_kilometers,
+      )  / 1000 AS FLOAT
+    ) AS distance_kilometers,
       ST_AsGeoJSON(geom)::json AS geometry
       FROM estaciones_metro em 
       ORDER BY geom <-> ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)
@@ -162,7 +163,7 @@ app.get("/estaciones-mas-cercana", async function (req, res) {
 app.get("/reporte-precioPromedio-airbnb", async function (req, res) {
   try {
     const results = await client.query(`
-    SELECT bv.id, bv.nombre_bar, MIN(a.price) as precio_promedio
+    SELECT bv.id, bv.nombre_bar, AVG(a.price) as precio_promedio
     FROM "barrio-vereda" bv
     JOIN airbnb a ON ST_Contains(bv.geom, a.geom)
     GROUP BY bv.id
