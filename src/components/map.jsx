@@ -5,7 +5,7 @@ import {
   TileLayer,
   LayersControl,
   LayerGroup,
-  useMap
+  useMap,
 } from "react-leaflet";
 import LayerAirbnb from "./layers/layer-airbnb";
 import LayerPoligonos from "./layers/layer-poligonos";
@@ -14,8 +14,8 @@ import LayerEstacionesMetro from "./layers/layer-estaciones-metro";
 
 import "./mapa.css";
 import "leaflet/dist/leaflet.css";
-import 'leaflet-routing-machine';
-import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
+import "leaflet-routing-machine";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
@@ -52,10 +52,7 @@ export default function Map() {
     setEstacionesMetro(estacionesMetro);
   };
 
-  const updateRouting = () => {
-
-  }
-
+  const updateRouting = () => {};
 
   useEffect(() => {
     Promise.all([fetchDataAirbnb(), fetchDataPoligonos(), fetchDataMetro()]);
@@ -77,10 +74,23 @@ export default function Map() {
             <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" />
           </LayersControl.BaseLayer>
 
+          <LayersControl.BaseLayer name="Esri DeLorme">
+            <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}" />
+          </LayersControl.BaseLayer>
+
+          <LayersControl.BaseLayer name="Open Topop Map">
+            <TileLayer url="https://tile.opentopomap.org/{z}/{x}/{y}.png" />
+          </LayersControl.BaseLayer>
+
           <LayersControl.Overlay checked name="Airbnb ubicaciones">
             <LayerGroup>
               {dataAirbnb.map((item) => (
-                <LayerAirbnb key={item.id} item={item} mapRef={mapRef} routingControlRef={routingControlRef}/>
+                <LayerAirbnb
+                  key={item.id}
+                  item={item}
+                  mapRef={mapRef}
+                  routingControlRef={routingControlRef}
+                />
               ))}
             </LayerGroup>
           </LayersControl.Overlay>
