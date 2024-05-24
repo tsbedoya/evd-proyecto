@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Bar } from "react-chartjs-2";
-
 import { AppContext } from "../../App";
 
-// Opciones para el gráfico de pastel
 const options = {
   responsive: true,
   plugins: {
@@ -26,8 +24,7 @@ export const BarChartMetro = () => {
   const [dataReporte, setDataReporte] = useState({});
 
   useEffect(() => {
-    if (!estacionesMetroCercanas.length) return;
-
+    if (!Array.isArray(estacionesMetroCercanas) || !estacionesMetroCercanas.length) return;
 
     const mappedReporteAirbnb = {
       labels: estacionesMetroCercanas.map((item) => item.nombre),
@@ -37,16 +34,15 @@ export const BarChartMetro = () => {
           data: estacionesMetroCercanas.map((item) =>
             parseFloat(item.distance_kilometers).toFixed(2)
           ),
-          backgroundColor: "rgb(96 60 232 / 65%)",
-          color: "#fff"
+          backgroundColor: "rgba(96, 60, 232, 0.40)",
         },
       ],
     };
     setDataReporte(mappedReporteAirbnb);
     setHideMainGrpah(true);
-  }, [estacionesMetroCercanas]);
+  }, [estacionesMetroCercanas, setHideMainGrpah]);
 
   return hideMainGrpah && Object.keys(dataReporte).length ? (
-    <Bar options={options} data={dataReporte} className="bar-hart" />
+    <Bar options={options} data={dataReporte} className="bar-hart" aria-label="Bar chart displaying the top 5 closest metro stations by distance in kilometers" />
   ) : null;
 };
