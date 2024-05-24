@@ -9,7 +9,7 @@ import {
   ArcElement,
   Legend,
 } from "chart.js";
-import { GraphPieChart, GraphBarChart, BarChartMetro } from "./graphs/index";
+import { GraphPieChart, BarChartCantidadAirbnb, BarChartMetro } from "./graphs/index";
 import ChartDataLabels from "chartjs-plugin-datalabels"; // Importar el plugin
 
 // Registrar componentes de Chart.js
@@ -32,7 +32,7 @@ export default function Graphs() {
         <br></br>
         <GraphPieChart />
         <br></br>
-        <GraphBarChart />
+        <BarChartCantidadAirbnb />
         <br></br>
       </div>
     </div>

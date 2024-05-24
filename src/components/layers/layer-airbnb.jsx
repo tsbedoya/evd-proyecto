@@ -1,26 +1,26 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { Popup, GeoJSON } from "react-leaflet";
 import Slider from "react-slick";
-import L from 'leaflet';
+import L from "leaflet";
 import { AppContext } from "../../App";
 
 const sliderSettings = {
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
 };
 
 export default function LayerAirbnb({ item, mapRef, routingControlRef }) {
   const popupRef = useRef();
-  const { setEstacionesMetroCercanas } = useContext(AppContext);
+  const { setHideMainGrpah, setEstacionesMetroCercanas } = useContext(AppContext);
   const [startPoint, setStartPoint] = useState(null); // Punto inicial fijo
   const [endPoint, setEndPoint] = useState(null); // Punto final dinámico
 
   useEffect(() => {
     const popup = popupRef.current;
     if (popup) {
-      popup.on('remove', () => {
-        setEstacionesMetroCercanas([])
+      popup.on("remove", () => {
+        setHideMainGrpah(false);
       });
     }
   }, []);
@@ -30,14 +30,11 @@ export default function LayerAirbnb({ item, mapRef, routingControlRef }) {
 
     if (endPoint) {
       // Actualizar waypoints
-      // routingControlRef.current.setWaypoints([L.latLng(startPoint), L.latLng(endPoint)]);
-      // routingControlRef.current.setWaypoints([L.latLng(-75.70528, 6.34079), L.latLng(-75.54447595446773, 6.245263089524828)]);
-      console.log(startPoint, endPoint)
       L.Routing.control({
         createMarker: () => null,
         waypoints: [
           L.latLng(startPoint[0], startPoint[1]),
-          L.latLng(endPoint[0], endPoint[1])
+          L.latLng(endPoint[0], endPoint[1]),
         ],
         show: false,
       }).addTo(mapRef.current);
@@ -45,23 +42,26 @@ export default function LayerAirbnb({ item, mapRef, routingControlRef }) {
   }, [endPoint]);
 
   const onEachFeature = (feature, layer) => {
-    layer.on('click', async () => {
+    layer.on("click", async () => {
       const [lng, lat] = feature.coordinates;
-      setStartPoint([lat, lng])
+      setStartPoint([lat, lng]);
       // console.log(feature, layer)
-      const response = await fetch(`http://localhost:3001/estaciones-mas-cercana?lat=${lat}&lng=${lng}`);
+      const response = await fetch(
+        `http://localhost:3001/estaciones-mas-cercana?lat=${lat}&lng=${lng}`
+      );
       const estacionesMetro = await response.json();
-      
-      setEstacionesMetroCercanas(estacionesMetro)
 
-      const [endLng, endLat] = estacionesMetro[0].geometry.coordinates
-      setEndPoint([endLat, endLng])
+      setEstacionesMetroCercanas(estacionesMetro);
+      setHideMainGrpah(true)
+
+      const [endLng, endLat] = estacionesMetro[0].geometry.coordinates;
+      setEndPoint([endLat, endLng]);
     });
   };
-  
+
   return (
     <>
-      <GeoJSON data={item.geometry} onEachFeature={onEachFeature} >
+      <GeoJSON data={item.geometry} onEachFeature={onEachFeature}>
         <Popup maxWidth="400" ref={popupRef}>
           <Slider className="photos-airbnb" {...sliderSettings}>
             {item.photos.map((photo, i) => (

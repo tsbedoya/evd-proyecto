@@ -175,4 +175,22 @@ app.get("/reporte-precioPromedio-airbnb", async function (req, res) {
   }
 });
 
+app.get("/reporte-precioPromedio-barrio", async function (req, res) {
+  try {
+    const { lat, lng } = req.query;
+    const results = await client.query(`
+    WITH poligono_seleccionado AS (
+      SELECT *
+      FROM "barrio-vereda"
+      WHERE ST_Contains(geom, ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326))
+    )
+    SELECT AVG(a.price) as promedio_precio_barrio
+    FROM airbnb a
+    JOIN poligono_seleccionado ps ON ST_Contains(ps.geom, a.geom);`);
+    res.send(results.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 app.listen(3001);

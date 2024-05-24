@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
@@ -21,10 +21,21 @@ function App() {
 }
 
 function Layout() {
+  const [hideMainGrpah, setHideMainGrpah] = useState(false);
   const [estacionesMetroCercanas, setEstacionesMetroCercanas] = useState([]);
+  const [promedioPrecioBarrio, setPromedioPrecioBarrio] = useState([]);
 
   return (
-    <AppContext.Provider value={{ estacionesMetroCercanas, setEstacionesMetroCercanas }}>
+    <AppContext.Provider
+      value={{
+        hideMainGrpah,
+        setHideMainGrpah,
+        estacionesMetroCercanas,
+        setEstacionesMetroCercanas,
+        promedioPrecioBarrio,
+        setPromedioPrecioBarrio,
+      }}
+    >
       <Navbar />
       <main className="container-fluid">
         <Outlet />

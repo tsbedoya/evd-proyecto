@@ -1,4 +1,4 @@
 
 export * from './PieChart';
-export * from './BarChart';
+export * from './BarChartCantidadAirbnb';
 export * from './BarChartMetro';
