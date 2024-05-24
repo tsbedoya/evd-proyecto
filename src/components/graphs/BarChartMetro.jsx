@@ -28,6 +28,7 @@ export const BarChartMetro = () => {
   useEffect(() => {
     if (!estacionesMetroCercanas.length) return;
 
+
     const mappedReporteAirbnb = {
       labels: estacionesMetroCercanas.map((item) => item.nombre),
       datasets: [
@@ -35,7 +36,7 @@ export const BarChartMetro = () => {
           label: "Distancia en KM",
           data: estacionesMetroCercanas.map((item) =>
             parseFloat(item.distance_kilometers).toFixed(2)
-          ).sort((d1, d2) => d2 - d1),
+          ),
           backgroundColor: "rgb(96 60 232 / 65%)",
           color: "#fff"
         },
