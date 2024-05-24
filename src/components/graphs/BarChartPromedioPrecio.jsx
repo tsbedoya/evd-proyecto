@@ -29,7 +29,7 @@ const options = {
 export const BarChartPromedioPrecio = () => {
   const { hideMainGrpah, promedioPrecioBarrio } = useContext(AppContext);
   const dataReporte = {
-    labels: ["Promedio de precio barrio VS Precio del alojamiento"],
+    labels: ["Promedio de precio barrio VS Precio del alojamiento ($USD)"],
     datasets: [
       {
         label: "Promedio de precio barrio",

@@ -13,7 +13,7 @@ const options = {
     },
     title: {
       display: true,
-      text: "Top 10 promedio Airbnb por barrio",
+      text: "Top 10 - Precio Promedio del Alojamiento x Barrio ($USD)",
     },
   },
   animation: {
