@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { Bar } from "react-chartjs-2";
-import Loading from "../../loading.gif";
 
 import { AppContext } from "../../App";
 

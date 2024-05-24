@@ -17,16 +17,16 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
-import icon from "leaflet/dist/images/marker-icon.png";
-import iconShadow from "leaflet/dist/images/marker-shadow.png";
+import icon from "../icono_airbnb.jpeg";
 
 L.Marker.prototype.options.icon = L.icon({
   iconUrl: icon,
-  shadowUrl: iconShadow,
+  iconSize: [24, 24],
+  className: "icono-airbnb"
 });
 
 // medellin
-const defaultLocation = [6.2442872, -75.6224112];
+const defaultLocation = [6.2492358,-75.6016402];
 export default function Map() {
   const mapRef = useRef();
   const routingControlRef = useRef(null);
@@ -51,8 +51,6 @@ export default function Map() {
     const estacionesMetro = await response.json();
     setEstacionesMetro(estacionesMetro);
   };
-
-  const updateRouting = () => {};
 
   useEffect(() => {
     Promise.all([fetchDataAirbnb(), fetchDataPoligonos(), fetchDataMetro()]);
@@ -111,11 +109,11 @@ export default function Map() {
             </LayerGroup>
           </LayersControl.Overlay>
 
-          <LayersControl.Overlay name="Poligonos con más Airbnb">
+          {/*<LayersControl.Overlay name="Poligonos con más Airbnb">
             <LayerGroup>
               <LayerPoligonosAirbnb />
             </LayerGroup>
-          </LayersControl.Overlay>
+          </LayersControl.Overlay>*/}
         </LayersControl>
       </MapContainer>
     </div>

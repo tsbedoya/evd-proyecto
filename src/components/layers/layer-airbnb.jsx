@@ -11,6 +11,7 @@ const sliderSettings = {
 };
 
 export default function LayerAirbnb({ item, mapRef, routingControlRef }) {
+  const removeRouting = useRef();
   const popupRef = useRef();
   const {
     setHideMainGrpah,
@@ -25,6 +26,7 @@ export default function LayerAirbnb({ item, mapRef, routingControlRef }) {
     if (popup) {
       popup.on("remove", () => {
         setHideMainGrpah(false);
+        mapRef.current.removeControl(removeRouting.current)
       });
     }
   }, []);
@@ -34,7 +36,7 @@ export default function LayerAirbnb({ item, mapRef, routingControlRef }) {
 
     if (endPoint) {
       // Actualizar waypoints
-      L.Routing.control({
+      removeRouting.current = L.Routing.control({
         createMarker: () => null,
         waypoints: [
           L.latLng(startPoint[0], startPoint[1]),
@@ -59,10 +61,11 @@ export default function LayerAirbnb({ item, mapRef, routingControlRef }) {
       const response2 = await fetch(
         `http://localhost:3001/reporte-precioPromedio-barrio?lat=${lat}&lng=${lng}`
       );
-      const { promedio_precio_barrio } = (await response2.json())[0];
+      const { promedio_precio_barrio, nombre_bar } = (await response2.json())[0];
       setPromedioPrecioBarrio({
         promedioPrecioBarrio: parseFloat(promedio_precio_barrio).toFixed(2),
         precioAirbnb: item.price,
+        nombreBarrio: nombre_bar
       });
       setHideMainGrpah(true);
 

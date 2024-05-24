@@ -36,7 +36,8 @@ export const BarChartMetro = () => {
           data: estacionesMetroCercanas.map((item) =>
             parseFloat(item.distance_kilometers).toFixed(2)
           ).sort((d1, d2) => d2 - d1),
-          backgroundColor: "rgba(255, 99, 132, 0.5)",
+          backgroundColor: "rgb(96 60 232 / 65%)",
+          color: "#fff"
         },
       ],
     };
