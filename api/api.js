@@ -36,7 +36,7 @@ app.use(
 app.get("/layer-airbnb", async function (req, res) {
   try {
     const results = await client.query(`
-      SELECT a.id, a."name", a.stars, a."numberOfGuests", a."roomType", ST_AsGeoJSON(a.geom)::json AS geometry,
+      SELECT a.id, a."name", a.stars, a."numberOfGuests", a.price, a."roomType", ST_AsGeoJSON(a.geom)::json AS geometry,
         ${nestQuery(`
           SELECT p.url, p.caption
           FROM photos p
@@ -44,7 +44,7 @@ app.get("/layer-airbnb", async function (req, res) {
         `)} AS photos
       FROM airbnb a
       WHERE a.address = 'Medellín, Antioquia, Colombia'
-      limit 30`);
+      limit 100`);
 
     res.send(results.rows);
   } catch (err) {
@@ -143,7 +143,6 @@ SELECT * FROM remaining;`);
 app.get("/estaciones-mas-cercana", async function (req, res) {
   try {
     const { lat, lng } = req.query;
-    console.log(req.query)
     const results = await client.query(`
       SELECT id, nombre, ST_Distance(
         ST_Transform(geom, 3857),

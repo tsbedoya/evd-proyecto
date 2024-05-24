@@ -23,7 +23,7 @@ function App() {
 function Layout() {
   const [hideMainGrpah, setHideMainGrpah] = useState(false);
   const [estacionesMetroCercanas, setEstacionesMetroCercanas] = useState([]);
-  const [promedioPrecioBarrio, setPromedioPrecioBarrio] = useState([]);
+  const [promedioPrecioBarrio, setPromedioPrecioBarrio] = useState({});
 
   return (
     <AppContext.Provider

@@ -12,7 +12,11 @@ const sliderSettings = {
 
 export default function LayerAirbnb({ item, mapRef, routingControlRef }) {
   const popupRef = useRef();
-  const { setHideMainGrpah, setEstacionesMetroCercanas } = useContext(AppContext);
+  const {
+    setHideMainGrpah,
+    setEstacionesMetroCercanas,
+    setPromedioPrecioBarrio,
+  } = useContext(AppContext);
   const [startPoint, setStartPoint] = useState(null); // Punto inicial fijo
   const [endPoint, setEndPoint] = useState(null); // Punto final dinámico
 
@@ -45,14 +49,22 @@ export default function LayerAirbnb({ item, mapRef, routingControlRef }) {
     layer.on("click", async () => {
       const [lng, lat] = feature.coordinates;
       setStartPoint([lat, lng]);
-      // console.log(feature, layer)
+
       const response = await fetch(
         `http://localhost:3001/estaciones-mas-cercana?lat=${lat}&lng=${lng}`
       );
       const estacionesMetro = await response.json();
-
       setEstacionesMetroCercanas(estacionesMetro);
-      setHideMainGrpah(true)
+
+      const response2 = await fetch(
+        `http://localhost:3001/reporte-precioPromedio-barrio?lat=${lat}&lng=${lng}`
+      );
+      const { promedio_precio_barrio } = (await response2.json())[0];
+      setPromedioPrecioBarrio({
+        promedioPrecioBarrio: parseFloat(promedio_precio_barrio).toFixed(2),
+        precioAirbnb: item.price,
+      });
+      setHideMainGrpah(true);
 
       const [endLng, endLat] = estacionesMetro[0].geometry.coordinates;
       setEndPoint([endLat, endLng]);
@@ -70,6 +82,7 @@ export default function LayerAirbnb({ item, mapRef, routingControlRef }) {
           </Slider>
           <div className="modal-info">
             <p className="name-airbnb">{item.name}</p>
+            <p>Precio: ${item.price}</p>
             <p>Puntaje: {item.stars}</p>
             <p>Número de invitados: {item.numberOfGuests}</p>
             <p>Tipo habitación: {item.roomType}</p>
